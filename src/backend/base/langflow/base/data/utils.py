@@ -7,6 +7,7 @@ from typing import Callable, List, Optional, Text
 import yaml
 
 from langflow.schema.schema import Record
+import defusedxml.ElementTree
 
 # Types of files that can be read simply by file.read()
 # and have 100% to be completely readable
@@ -120,7 +121,7 @@ def parse_text_file_to_record(file_path: str, silent_errors: bool) -> Optional[R
         elif file_path.endswith(".yaml") or file_path.endswith(".yml"):
             text = yaml.safe_load(text)
         elif file_path.endswith(".xml"):
-            xml_element = ET.fromstring(text)
+            xml_element = defusedxml.ElementTree.fromstring(text)
             text = ET.tostring(xml_element, encoding="unicode")
     except Exception as e:
         if not silent_errors:
